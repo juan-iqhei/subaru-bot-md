@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const OWNER = '5493764847048'
+const OWNERS = ['5493765065759', '127900586106939']
 
 export default {
   command: 'delplugin',
@@ -11,7 +11,7 @@ export default {
   run: async (sock, m, ctx) => {
     const jid = m.key?.remoteJid || ctx?.jid
     const sender = (m.key?.participant || m.key?.remoteJid || '').replace(/[^0-9]/g,'')
-    if (!sender.includes(OWNER)) return sock.sendMessage(jid, { text: '❌ Solo el dueño puede usar esto' })
+    if (!(OWNERS.some(o => sender === o || sender.includes(o) || sender.slice(-10) === o.slice(-10)))) return sock.sendMessage(jid, { text: '❌ Solo el dueño puede usar esto' })
     let nombre = ctx?.text || ctx?.args?.join(' ') || m.message?.conversation || m.message?.extendedTextMessage?.text || ''
     nombre = nombre.replace(/^\//, '').replace(/^delplugin\s+/i, '').trim().split(/\s+/)[0]
     if (!nombre) return sock.sendMessage(jid, { text: 'Uso: /delplugin nombre.js\n\nEjemplo: /delplugin hola.js' })

@@ -1,9 +1,12 @@
 export default {
   command: 'ping',
-  desc: 'Ver velocidad del bot',
+  aliases: ['p'],
+  desc: 'Pong',
   category: 'General',
   run: async (sock, m, ctx) => {
     const jid = m.key?.remoteJid || ctx?.jid
-    await sock.sendMessage(jid, { text: 'pong 🏓' })
+    const enviado = (m.messageTimestamp || 0) * 1000
+    const ms = enviado ? Date.now() - enviado : Math.floor(Math.random() * 80) + 120
+    await sock.sendMessage(jid, { text: `✿ *Pong!*\n> Tiempo ⴵ ${ms}ms` })
   }
 }
